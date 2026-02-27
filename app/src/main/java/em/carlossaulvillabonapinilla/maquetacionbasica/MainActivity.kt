@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -59,6 +60,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DetalleProductoScreen()
             PantallaArticulo()
+            PantallaUsuarioPerfil()
 
         }
     }
@@ -233,4 +235,188 @@ fun PantallaArticulo() {
     }
 }
 
+@Preview(showSystemUi = true, name = "PantallaPerfil")
+@Composable
+fun PantallaUsuarioPerfil() {
+    val purple = Color(0xFF6650A4)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        // Imagen circular
+        Image(
+            painter = painterResource(id = R.drawable.imageciclista),
+            contentDescription = "Foto de perfil",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(100.dp)
+                .clip(CircleShape)
+                .border(2.dp, purple, CircleShape)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Nombre
+        Text(
+            text = "Juan Pérez",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
+
+        // Bio
+        Text(
+            text = "Desarrollador Android apasionado por la tecnología y el diseño.",
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Estadisticas
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            ElementoEstadistica(value = "150", label = "Posts")
+            ElementoEstadistica(value = "2.3K", label = "Seguidores")
+            ElementoEstadistica(value = "980", label = "Likes")
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Botones seguir y mensaje
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Button(
+                onClick = {},
+                colors = ButtonDefaults.buttonColors(containerColor = purple),
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Seguir")
+            }
+            OutlinedButton(
+                onClick = {},
+                modifier = Modifier.weight(1f)
+            ) {
+                Text("Mensaje", color = purple)
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Intereses
+        Text(
+            text = "Intereses",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            modifier = Modifier.align(Alignment.Start)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Intereses editados
+        val interests = listOf("Ciclismo", "Programación", "UI/UX", "Música", "Viajes", "Gaming")
+        Column(modifier = Modifier.align(Alignment.Start)) {
+            interests.chunked(3).forEach { rowItems ->
+                Row(horizontalArrangement = Arrangement.spacedBy(40.dp)) {
+                    rowItems.forEach { interest ->
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFFE0E0E0),
+                                    shape = RoundedCornerShape(50)
+                                )
+                                .border(1.dp, Color(0xFFBDBDBD), RoundedCornerShape(50))
+                                .padding(horizontal = 12.dp, vertical = 6.dp)
+                        ) {
+                            Text(
+                                text = interest,
+                                fontSize = 14.sp,
+                                color = Color.DarkGray
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Proyectos Recientes
+        Text(
+            text = "Proyectos Recientes",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            modifier = Modifier.align(Alignment.Start)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Card del proyecto
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            elevation = CardDefaults.cardElevation(4.dp)
+        ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+
+                // Imagen del proyecto
+                Image(
+                    painter = painterResource(id = R.drawable.imagecicilstacard),
+                    contentDescription = "Proyecto",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(RoundedCornerShape(topStart = 8.dp, bottomStart = 8.dp))
+                )
+
+                // Texto del proyecto
+                Column(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .weight(1f)
+                ) {
+                    Text(
+                        text = "App de Ciclismo",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                    Text(
+                        text = "Aplicación para rastrear rutas de ciclismo con mapas y estadísticas.",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(top = 4.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(
+                        onClick = {},
+                        colors = ButtonDefaults.buttonColors(containerColor = purple),
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                        modifier = Modifier.align(Alignment.End)
+                    ) {
+                        Text("Ver más", fontSize = 12.sp)
+                    }
+                }
+            }
+        }
+    }
+}
+
+//Composable auxiliar
+@Composable
+fun ElementoEstadistica(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(text = value, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+        Text(text = label, style = MaterialTheme.typography.bodySmall)
+    }
+}
 
